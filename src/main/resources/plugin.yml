@@ -1,0 +1,6 @@
+name: Ranks
+version: '${project.version}'
+main: tech.secretgarden.ranks.Ranks
+api-version: 1.18
+authors: [ ChuckLingBao ]
+description: Sets ranks for new unpaid players
