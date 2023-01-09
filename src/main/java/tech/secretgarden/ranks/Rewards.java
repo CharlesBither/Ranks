@@ -38,9 +38,6 @@ public class Rewards {
         // Iterate through ranks and give rewards as needed.
         for (int i = 0; i < map.size(); i++) {
             String key = ranks[i];
-            System.out.println(key);
-
-            System.out.println(key);
             String[] context = map.get(key);
 
             // Give rewards if player does not have rank.

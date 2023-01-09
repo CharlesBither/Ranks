@@ -78,7 +78,7 @@ public final class Ranks extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        System.out.println("Ranks has been disabled");
+        Bukkit.getLogger().info("Ranks has been disabled");
         database.dropletDisconnect();
         database.disconnect();
     }

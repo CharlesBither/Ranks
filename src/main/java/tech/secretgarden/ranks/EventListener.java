@@ -1,5 +1,6 @@
 package tech.secretgarden.ranks;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,9 +24,9 @@ public class EventListener implements Listener {
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM ranks WHERE uuid = ?")) {
             statement.setString(1, player.getUniqueId().toString());
             ResultSet rs = statement.executeQuery();
-            System.out.println("finding player in local");
+            Bukkit.getLogger().info("finding player in local");
             if (!rs.next()) {
-                System.out.println("did not find local");
+                Bukkit.getLogger().info("did not find local");
                 //insert the new user into the table
                 initLocalUser(player);
             }
@@ -37,9 +38,9 @@ public class EventListener implements Listener {
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM ranks WHERE uuid = ?")) {
             statement.setString(1, player.getUniqueId().toString());
             ResultSet rs = statement.executeQuery();
-            System.out.println("finding player in droplet");
+            Bukkit.getLogger().info("finding player in droplet");
             if (!rs.next()) {
-                System.out.println("did not find droplet");
+                Bukkit.getLogger().info("did not find droplet");
                 //insert the new user into the table
                 initDropletUser(player);
             }
@@ -58,7 +59,7 @@ public class EventListener implements Listener {
             statement.setString(2, player.getName());
             statement.setString(3, "null");
             statement.executeUpdate();
-            System.out.println("inserted into local");
+            Bukkit.getLogger().info("inserted into local");
 
         } catch (SQLException x) {
             x.printStackTrace();
@@ -72,7 +73,7 @@ public class EventListener implements Listener {
             statement.setString(2, player.getName());
             statement.setString(3, "null");
             statement.executeUpdate();
-            System.out.println("inserted into Droplet");
+            Bukkit.getLogger().info("inserted into Droplet");
 
         } catch (SQLException x) {
             x.printStackTrace();
