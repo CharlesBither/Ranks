@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 public final class Ranks extends JavaPlugin {
 
+    public static Ranks plugin;
+
     Database database = new Database();
     RanksPermissions ranksPermissions = new RanksPermissions();
 
@@ -53,6 +55,9 @@ public final class Ranks extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
+        plugin = this;
+
         // Plugin startup logic
         System.out.println("Ranks has loaded");
         Bukkit.getPluginManager().registerEvents(new EventListener(), this);
