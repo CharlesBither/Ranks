@@ -1,7 +1,6 @@
 package tech.secretgarden.ranks;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,7 +11,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collection;
 
 public class EventListener implements Listener {
 
@@ -27,9 +25,9 @@ public class EventListener implements Listener {
              PreparedStatement statement = connection.prepareStatement("SELECT uuid, gamertag FROM ranks WHERE uuid = ?")) {
             statement.setString(1, player.getUniqueId().toString());
             ResultSet rs = statement.executeQuery();
-            System.out.println("finding player in local");
+            Bukkit.getLogger().info("finding player in local");
             if (!rs.next()) {
-                System.out.println("did not find local");
+                Bukkit.getLogger().info("did not find local");
                 //insert the new user into the table
                 initLocalUser(player);
                 initDropletUser(player);
@@ -51,8 +49,7 @@ public class EventListener implements Listener {
         } catch (SQLException x) {
             x.printStackTrace();
         }
-
-        //finally update the player with their rank
+        // finally, update the player with their rank
         ranksPermissions.checkRank(player);
     }
 
@@ -78,14 +75,13 @@ public class EventListener implements Listener {
 
     private void initLocalUser(Player player) {
 
-        String rank = getPlayerGroup(player, Ranks.getPossibleGroups());
         try (Connection connection = database.getPool().getConnection();
         PreparedStatement statement = connection.prepareStatement("INSERT INTO ranks (uuid, gamertag, rank_name) VALUES (?,?,?);")) {
             statement.setString(1, player.getUniqueId().toString());
             statement.setString(2, player.getName());
-            statement.setString(3, rank);
+            statement.setString(3, "null");
             statement.executeUpdate();
-            System.out.println("inserted into local");
+            Bukkit.getLogger().info("inserted into local");
 
         } catch (SQLException x) {
             x.printStackTrace();
@@ -93,26 +89,16 @@ public class EventListener implements Listener {
     }
     private void initDropletUser(Player player) {
 
-        String rank = getPlayerGroup(player, Ranks.getPossibleGroups());
         try (Connection connection = database.getDropletPool().getConnection();
              PreparedStatement statement = connection.prepareStatement("INSERT INTO ranks (uuid, gamertag, rank_name) VALUES (?,?,?);")) {
             statement.setString(1, player.getUniqueId().toString());
             statement.setString(2, player.getName());
-            statement.setString(3, rank);
+            statement.setString(3, "null");
             statement.executeUpdate();
-            System.out.println("inserted into Droplet");
+            Bukkit.getLogger().info("inserted into Droplet");
 
         } catch (SQLException x) {
             x.printStackTrace();
         }
-    }
-    public static String getPlayerGroup(Player player, Collection<String> possibleGroups) {
-        for (String group : possibleGroups) {
-            if (player.hasPermission("group." + group)) {
-                System.out.println(group);
-                return group;
-            }
-        }
-        return null;
     }
 }
